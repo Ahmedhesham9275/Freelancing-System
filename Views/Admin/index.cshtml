@@ -1,0 +1,60 @@
+﻿@model IEnumerable<Freelance.Models.JobPost>
+@using Freelance.Models
+
+@{
+    ViewBag.Title = "PostsPage";
+    
+}
+
+
+<div style="margin-top:50px">
+    <h2>Jobs Avalabile</h2>
+    <hr />
+    @foreach (var item in Model)
+    {
+
+         <div class="container" style=" border-radius: 3px; padding: 5px;">
+                <div class=" d-flex justify-content-between">
+                    <div>
+                        <h3 style="display:inline">@Html.DisplayFor(modelItem => item.JobTitle)</h3>
+                        <div class="d-flex mt-1">
+                            <div>
+                                <h6>@Html.DisplayFor(modelItem => item.JobType)&nbsp;|&nbsp;</h6>
+                            </div>
+                            <div>
+                                <h6>@Html.DisplayFor(modelItem => item.JobBudget)$</h6>
+                            </div>
+                        </div>
+                    </div>
+                   
+                </div>
+                <div class="ms-5 mt-2 w-75">
+                    <h5 class="text-break">
+                        @Html.DisplayFor(modelItem => item.JobDes)
+                    </h5>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <div class="d-inline-flex mt-2">
+                        <h5>Publish Date :&nbsp;</h5>
+                       
+                        <p>@Html.DisplayFor(modelItem => item.JobDate)</p>
+                    </div>
+                    <div class="d-flex">
+                        <div>
+                            @Html.ActionLink("Edit", "EditPost", "Admin", new { JobId = item.Id }, new { @class = "btn btn-primary me-1" })
+                        </div> 
+
+                            @using (Html.BeginForm("DeleteJob", "Admin", FormMethod.Post))
+                            {
+
+                                @Html.AntiForgeryToken()
+                                @Html.Hidden("JobId", item.Id)
+                                <button type="submit" class="btn btn-danger">Remove</button>
+
+                            }
+                    </div>
+                </div>
+                <hr />
+            </div>
+    }
+</div>

@@ -1,0 +1,80 @@
+﻿@model Freelance.Models.ViewModels.HomeViewModel
+
+@{
+    //Layout = "~/Views/Shared/_ClientLayout.cshtml";
+
+    ViewBag.Title = "Edit Post";
+}
+
+<h2 class="mt-2">Edit Post</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.post.Id)
+        @Html.HiddenFor(model => model.post.ClientId)
+        <style>
+            textarea {
+                width: 100%;
+                height: 150px;
+                padding: 12px 20px;
+                box-sizing: border-box;
+            }
+        </style>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.post.JobType, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @{
+                    List<SelectListItem> jobt = new List<SelectListItem>();
+                    jobt.Add(new SelectListItem { Text = "Fixed", Value = "Fixed" });
+                    jobt.Add(new SelectListItem { Text = "Hourly", Value = "Hourly" });
+                }
+                @Html.DropDownListFor(model => model.post.JobType, jobt)
+                @Html.ValidationMessageFor(model => model.post.JobType, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.post.JobTitle, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.post.JobTitle, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.post.JobTitle, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.post.JobBudget, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.post.JobBudget, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.post.JobBudget, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        @Html.HiddenFor(model => model.post.JobDate)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.post.JobDes, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.post.JobDes, new { htmlAttributes = new { @class = "form-control", @type="text" } })
+                @Html.ValidationMessageFor(model => model.post.JobDes, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @Html.HiddenFor(model => model.post.PropNum)
+        @Html.HiddenFor(model => model.post.Rate)
+        @Html.HiddenFor(model => model.post.Approved)
+        @Html.HiddenFor(model => model.post.Taken)
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-success" />
+            </div>
+        </div>
+    </div>
+
+}
+

@@ -1,0 +1,76 @@
+﻿@model Freelance.Models.ViewModels.HomeViewModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+
+<div class="mt-3">
+    <h2>User Details</h2>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.user.Photo)
+        </dt>
+
+        <dd>
+            <div>
+                @if (Model.user.Photo == null)
+                {
+
+                    <div class="mb-3">
+                        <label>
+                            <img class="avatar avatar-128 bg-light text-white p-2"
+                                 src="https://raw.githubusercontent.com/twbs/icons/main/icons/person-fill.svg" />
+                        </label>
+                    </div>
+                }
+                else
+                {
+                    <div class="mb-3">
+                        <label>
+                            <img  class="img-thumbnail" style="width:200px;height:250px;"
+                                 src="@Model.user.Photo">
+                        </label>
+                    </div>
+                }
+            </div>
+
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.user.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.user.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.user.LastName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.user.LastName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.user.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.user.UserName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.user.UserType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.user.UserType)
+        </dd>
+
+    </dl>
+</div>
+<p>
+</p>

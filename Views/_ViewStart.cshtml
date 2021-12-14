@@ -1,0 +1,18 @@
+﻿@using Freelance.Models
+@{
+    DataBaseConnection dbc = new DataBaseConnection();
+    var Usertype = dbc.GetUserType(User.Identity.Name);
+}
+@if (Usertype == "Freelancer"||Usertype=="")
+{
+
+    Layout = "~/Views/Shared/_WallLayout.cshtml";
+}
+else if (Usertype == "Client")
+{
+    Layout = "~/Views/Shared/_ClientLayout.cshtml";
+}
+else
+{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}

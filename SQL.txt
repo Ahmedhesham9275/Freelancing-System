@@ -1,0 +1,109 @@
+﻿CREATE TABLE [dbo].[User]
+(
+	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY , 
+	[Email] VARCHAR(50) NOT NULL unique, 
+	[UserName] VARCHAR (50) NOT NULL Unique,
+	[Password] VARCHAR(50) NOT NULL, 
+	[FirstName] VARCHAR(50) NOT NULL, 
+	[LastName] VARCHAR(50) NOT NULL, 
+	[PhoneNumber] VARCHAR(50) NOT NULL unique, 
+	[Photo] VARCHAR(MAX) NULL, 
+	[UserType] VARCHAR(50) NOT NULL, 
+);
+
+
+CREATE TABLE [dbo].[JobPost]
+(
+	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY, 
+	[ClientId] INT NOT NULL, 
+	[JobType] VARCHAR(50) NOT NULL, 
+	[JobTitle] VARCHAR(50) NOT NULL, 
+	[JobBudget] INT NOT NULL, 
+	[JobDate] VARCHAR(50) NOT NULL, 
+	[JobDes] VARCHAR(500) NOT NULL, 
+	[PropNum] INT NOT NULL DEFAULT 0, 
+	[Rate] FLOAT NOT NULL DEFAULT 0,
+	[Approved] INT NOT NULL DEFAULT 0,
+	[Taken] INT NOT NULL DEFAULT 0,
+	CONSTRAINT [FK_JobPost_ToTable] FOREIGN KEY ([ClientId]) REFERENCES [User]([Id])
+
+	
+);
+
+
+CREATE TABLE [dbo].[Proposal] (
+	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY, 
+	[JobId]        INT NOT NULL,
+	[FreelancerId] INT NOT NULL,
+	[Approved] INT NOT NULL DEFAULT 0,
+	CONSTRAINT [FK_Proposal_ToTable] FOREIGN KEY ([JobId]) REFERENCES [dbo].[JobPost] ([Id]),
+	CONSTRAINT [FK_Proposal_ToTable_1] FOREIGN KEY ([FreelancerId]) REFERENCES [dbo].[User] ([Id])
+);
+
+CREATE TABLE [dbo].[SavedJob]
+
+(
+	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY, 
+	[JobId] INT NOT NULL, 
+	[FreelancerId] INT NOT NULL, 
+	CONSTRAINT [FK_SavedJob_ToTable] FOREIGN KEY ([JobId]) REFERENCES [dbo].[JobPost] ([Id]) ,
+	CONSTRAINT [FK_SavedJob_ToTable_1] FOREIGN KEY ([FreelancerId]) REFERENCES [dbo].[User] ([Id])
+	
+);
+
+GO
+
+CREATE TRIGGER [DELETE_Parent]
+   ON dbo.[User]
+   INSTEAD OF DELETE
+AS 
+BEGIN
+ SET NOCOUNT ON;
+
+ DELETE FROM [SavedJob] WHERE JobId IN (SELECT [JobPost].ClientId FROM DELETED Join  [JobPost] on [DELETED].Id=[JobPost].ClientId )
+ DELETE FROM [SavedJob] WHERE FreelancerId IN (SELECT ID FROM DELETED)
+ DELETE FROM [JobPost] WHERE ClientId  IN(SELECT Id FROM DELETED)
+ DELETE FROM [Proposal] WHERE JobId IN (SELECT [JobPost].ClientId FROM DELETED Join  [JobPost] on [DELETED].Id=[JobPost].ClientId )
+ DELETE FROM [Proposal] WHERE FreelancerId IN (SELECT ID FROM DELETED)
+ DELETE FROM [User] WHERE Id IN (SELECT Id FROM DELETED)
+END
+GO
+CREATE TRIGGER [DELETE_Test]
+   ON [JobPost]
+   INSTEAD OF DELETE
+AS 
+BEGIN
+ SET NOCOUNT ON;
+ DELETE FROM [SavedJob] WHERE JobId IN (SELECT ID FROM DELETED)
+ DELETE FROM [Proposal] WHERE JobId IN (SELECT ID FROM DELETED)
+ DELETE FROM [JobPost] WHERE Id IN (SELECT Id FROM DELETED)
+END
+GO
+
+
+
+
+
+
+
+
+INSERT INTO [User] (Email ,UserName , Password , FirstName , LastName , PhoneNumber , UserType)
+VALUES ('admin@admin.com','admin','admin1234','admin','admin','+1234567899','Admin');
+
+INSERT INTO [User] (Email ,UserName , Password , FirstName , LastName , PhoneNumber , UserType)
+VALUES ('mohamed@gmail.com','mohamed','mohamed1234','mohamed','fakhrany','+9845566','Client');
+
+
+INSERT INTO [User] (Email ,UserName , Password , FirstName , LastName , PhoneNumber , UserType)
+VALUES ('omar@gmail.com','omar','omar1234','omar','khattab','+201141761648','Freelancer');
+
+INSERT INTO [User] (Email ,UserName , Password , FirstName , LastName , PhoneNumber , UserType)
+VALUES ('ahmed@gmail.com','ahmed','ahmed1234','ahmed','wael','+123456789','Freelancer');
+
+INSERT INTO [JobPost] (ClientId ,JobType , JobTitle , JobBudget , JobDate , JobDes)
+VALUES ('2','Fixed','Android','20','05/21/2021','hello my friends');
+
+INSERT INTO [JobPost] (ClientId ,JobType , JobTitle , JobBudget , JobDate , JobDes)
+VALUES ('2','Fixed','Android','20','05/22/2021','hola bitches');
+INSERT INTO [JobPost] (ClientId ,JobType , JobTitle , JobBudget , JobDate , JobDes)
+VALUES ('2','Fixed','Android','20','05/23/2021','eh ya 3rs mnk leh');

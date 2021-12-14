@@ -1,0 +1,369 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="SystemDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="JobPost">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ClientId" Type="int" Nullable="false" />
+          <Property Name="JobType" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="JobTitle" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="JobBudget" Type="int" Nullable="false" />
+          <Property Name="JobDate" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="JobDes" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="PropNum" Type="int" Nullable="false" />
+          <Property Name="Rate" Type="float" Nullable="false" />
+          <Property Name="Approved" Type="int" Nullable="false" />
+          <Property Name="Taken" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Proposal">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="JobId" Type="int" Nullable="false" />
+          <Property Name="FreelancerId" Type="int" Nullable="false" />
+          <Property Name="Approved" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SavedJob">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="JobId" Type="int" Nullable="false" />
+          <Property Name="FreelancerId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="PhoneNumber" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Photo" Type="varchar(max)" />
+          <Property Name="UserType" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="[FK_SavedJob_ToTable">
+          <End Role="JobPost" Type="Self.JobPost" Multiplicity="1" />
+          <End Role="SavedJob" Type="Self.SavedJob" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="JobPost">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SavedJob">
+              <PropertyRef Name="JobId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="[FK_SavedJob_ToTable_1">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="SavedJob" Type="Self.SavedJob" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SavedJob">
+              <PropertyRef Name="FreelancerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_JobPost_ToTable">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="JobPost" Type="Self.JobPost" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="JobPost">
+              <PropertyRef Name="ClientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Proposal_ToTable">
+          <End Role="JobPost" Type="Self.JobPost" Multiplicity="1" />
+          <End Role="Proposal" Type="Self.Proposal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="JobPost">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Proposal">
+              <PropertyRef Name="JobId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Proposal_ToTable_1">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Proposal" Type="Self.Proposal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Proposal">
+              <PropertyRef Name="FreelancerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SystemDBModelStoreContainer">
+          <EntitySet Name="JobPost" EntityType="Self.JobPost" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Proposal" EntityType="Self.Proposal" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SavedJob" EntityType="Self.SavedJob" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="[FK_SavedJob_ToTable" Association="Self.[FK_SavedJob_ToTable">
+            <End Role="JobPost" EntitySet="JobPost" />
+            <End Role="SavedJob" EntitySet="SavedJob" />
+          </AssociationSet>
+          <AssociationSet Name="[FK_SavedJob_ToTable_1" Association="Self.[FK_SavedJob_ToTable_1">
+            <End Role="User" EntitySet="User" />
+            <End Role="SavedJob" EntitySet="SavedJob" />
+          </AssociationSet>
+          <AssociationSet Name="FK_JobPost_ToTable" Association="Self.FK_JobPost_ToTable">
+            <End Role="User" EntitySet="User" />
+            <End Role="JobPost" EntitySet="JobPost" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Proposal_ToTable" Association="Self.FK_Proposal_ToTable">
+            <End Role="JobPost" EntitySet="JobPost" />
+            <End Role="Proposal" EntitySet="Proposal" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Proposal_ToTable_1" Association="Self.FK_Proposal_ToTable_1">
+            <End Role="User" EntitySet="User" />
+            <End Role="Proposal" EntitySet="Proposal" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SystemDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="JobPost">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClientId" Type="Int32" Nullable="false" />
+          <Property Name="JobType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="JobTitle" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="JobBudget" Type="Int32" Nullable="false" />
+          <Property Name="JobDate" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="JobDes" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PropNum" Type="Int32" Nullable="false" />
+          <Property Name="Rate" Type="Double" Nullable="false" />
+          <Property Name="Approved" Type="Int32" Nullable="false" />
+          <Property Name="Taken" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="SavedJobs" Relationship="Self.C_FK_SavedJob_ToTable" FromRole="JobPost" ToRole="SavedJob" />
+          <NavigationProperty Name="User" Relationship="Self.FK_JobPost_ToTable" FromRole="JobPost" ToRole="User" />
+          <NavigationProperty Name="Proposals" Relationship="Self.FK_Proposal_ToTable" FromRole="JobPost" ToRole="Proposal" />
+        </EntityType>
+        <EntityType Name="Proposal">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="JobId" Type="Int32" Nullable="false" />
+          <Property Name="FreelancerId" Type="Int32" Nullable="false" />
+          <Property Name="Approved" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="JobPost" Relationship="Self.FK_Proposal_ToTable" FromRole="Proposal" ToRole="JobPost" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Proposal_ToTable_1" FromRole="Proposal" ToRole="User" />
+        </EntityType>
+        <EntityType Name="SavedJob">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="JobId" Type="Int32" Nullable="false" />
+          <Property Name="FreelancerId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="JobPost" Relationship="Self.C_FK_SavedJob_ToTable" FromRole="SavedJob" ToRole="JobPost" />
+          <NavigationProperty Name="User" Relationship="Self.C_FK_SavedJob_ToTable_1" FromRole="SavedJob" ToRole="User" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Photo" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="UserType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="JobPosts" Relationship="Self.FK_JobPost_ToTable" FromRole="User" ToRole="JobPost" />
+          <NavigationProperty Name="Proposals" Relationship="Self.FK_Proposal_ToTable_1" FromRole="User" ToRole="Proposal" />
+          <NavigationProperty Name="SavedJobs" Relationship="Self.C_FK_SavedJob_ToTable_1" FromRole="User" ToRole="SavedJob" />
+        </EntityType>
+        <Association Name="C_FK_SavedJob_ToTable">
+          <End Role="JobPost" Type="Self.JobPost" Multiplicity="1" />
+          <End Role="SavedJob" Type="Self.SavedJob" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="JobPost">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SavedJob">
+              <PropertyRef Name="JobId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_JobPost_ToTable">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="JobPost" Type="Self.JobPost" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="JobPost">
+              <PropertyRef Name="ClientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Proposal_ToTable">
+          <End Role="JobPost" Type="Self.JobPost" Multiplicity="1" />
+          <End Role="Proposal" Type="Self.Proposal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="JobPost">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Proposal">
+              <PropertyRef Name="JobId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Proposal_ToTable_1">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Proposal" Type="Self.Proposal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Proposal">
+              <PropertyRef Name="FreelancerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="C_FK_SavedJob_ToTable_1">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="SavedJob" Type="Self.SavedJob" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SavedJob">
+              <PropertyRef Name="FreelancerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SystemDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="JobPosts" EntityType="Self.JobPost" />
+          <EntitySet Name="Proposals" EntityType="Self.Proposal" />
+          <EntitySet Name="SavedJobs" EntityType="Self.SavedJob" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <AssociationSet Name="C_FK_SavedJob_ToTable" Association="Self.C_FK_SavedJob_ToTable">
+            <End Role="JobPost" EntitySet="JobPosts" />
+            <End Role="SavedJob" EntitySet="SavedJobs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_JobPost_ToTable" Association="Self.FK_JobPost_ToTable">
+            <End Role="User" EntitySet="Users" />
+            <End Role="JobPost" EntitySet="JobPosts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Proposal_ToTable" Association="Self.FK_Proposal_ToTable">
+            <End Role="JobPost" EntitySet="JobPosts" />
+            <End Role="Proposal" EntitySet="Proposals" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Proposal_ToTable_1" Association="Self.FK_Proposal_ToTable_1">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Proposal" EntitySet="Proposals" />
+          </AssociationSet>
+          <AssociationSet Name="C_FK_SavedJob_ToTable_1" Association="Self.C_FK_SavedJob_ToTable_1">
+            <End Role="User" EntitySet="Users" />
+            <End Role="SavedJob" EntitySet="SavedJobs" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SystemDBModelStoreContainer" CdmEntityContainer="SystemDBEntities">
+          <EntitySetMapping Name="JobPosts">
+            <EntityTypeMapping TypeName="SystemDBModel.JobPost">
+              <MappingFragment StoreEntitySet="JobPost">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+                <ScalarProperty Name="JobType" ColumnName="JobType" />
+                <ScalarProperty Name="JobTitle" ColumnName="JobTitle" />
+                <ScalarProperty Name="JobBudget" ColumnName="JobBudget" />
+                <ScalarProperty Name="JobDate" ColumnName="JobDate" />
+                <ScalarProperty Name="JobDes" ColumnName="JobDes" />
+                <ScalarProperty Name="PropNum" ColumnName="PropNum" />
+                <ScalarProperty Name="Rate" ColumnName="Rate" />
+                <ScalarProperty Name="Approved" ColumnName="Approved" />
+                <ScalarProperty Name="Taken" ColumnName="Taken" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Proposals">
+            <EntityTypeMapping TypeName="SystemDBModel.Proposal">
+              <MappingFragment StoreEntitySet="Proposal">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="JobId" ColumnName="JobId" />
+                <ScalarProperty Name="FreelancerId" ColumnName="FreelancerId" />
+                <ScalarProperty Name="Approved" ColumnName="Approved" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SavedJobs">
+            <EntityTypeMapping TypeName="SystemDBModel.SavedJob">
+              <MappingFragment StoreEntitySet="SavedJob">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="JobId" ColumnName="JobId" />
+                <ScalarProperty Name="FreelancerId" ColumnName="FreelancerId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="SystemDBModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
+                <ScalarProperty Name="UserType" ColumnName="UserType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

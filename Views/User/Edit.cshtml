@@ -1,0 +1,106 @@
+﻿
+@model Freelance.Models.ViewModels.HomeViewModel
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2 class="mt-4">Edit Your Account Data</h2>
+
+
+@using (Html.BeginForm("Edit", "User", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.user.Id)
+
+
+        <div class="form-group">
+            @if (Model.user.Photo == null)
+            {
+                <div class="mb-3">
+                    <label style="cursor: pointer;" for="file-input">
+                        <img title="Select Photo" class="avatar avatar-128 bg-light text-white p-2"
+                             src="https://raw.githubusercontent.com/twbs/icons/main/icons/person-fill.svg" />
+                    </label>
+
+
+                </div>
+            }
+            else
+            {
+                <div class="mb-3">
+                    <label style="cursor: pointer;" for="file-input">
+                        <img title="Select Photo" class="img-thumbnail" style="width:200px;height:250px;"
+                             src="@Model.user.Photo">
+                    </label>
+                </div>
+            }
+            <input id="file-input" name="ImageFile" onchange="previewImage()" style="display: none;" type="file" />
+        </div>
+        <div class="row my-2">
+            <div class="col-4">
+                @Html.LabelFor(model => model.user.FirstName, htmlAttributes: new { @class = "control-label " })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.user.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.user.FirstName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-4">
+                @Html.LabelFor(model => model.user.LastName, htmlAttributes: new { @class = "control-label" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.user.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.user.LastName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="row my-2">
+
+            <div class="col-4">
+                @Html.LabelFor(model => model.user.UserName, htmlAttributes: new { @class = "control-label" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.user.UserName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.user.UserName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-4">
+                @Html.LabelFor(model => model.user.Email, htmlAttributes: new { @class = "control-label" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.user.Email, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.user.Email, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+        </div>
+        <div class="form-group my-2">
+            @Html.LabelFor(model => model.user.Password, htmlAttributes: new { @class = "control-label" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.user.Password, new { htmlAttributes = new { @class = "form-control", @type = "password" } })
+                @Html.ValidationMessageFor(model => model.user.Password, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group my-2 col-4">
+            @Html.LabelFor(model => model.user.PhoneNumber, htmlAttributes: new { @class = "control-label" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.user.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.user.PhoneNumber, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @Html.HiddenFor(model => model.user.UserType)
+        <div class="form-group my-2">
+
+            <input type="submit" value="Save" class="btn btn-primary" />
+        </div>
+    </div>
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

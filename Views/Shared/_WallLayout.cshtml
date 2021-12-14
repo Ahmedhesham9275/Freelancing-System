@@ -1,0 +1,190 @@
+﻿@using Freelance.Models
+@model Freelance.Models.ViewModels.HomeViewModel
+@{
+    List<SelectListItem> listItems = new List<SelectListItem>();
+    listItems.Add(new SelectListItem
+    {
+        Text = "Choose...",
+        Value = "",
+
+        Selected = true
+    });
+    listItems.Add(new SelectListItem
+    {
+        Text = "Client",
+        Value = "Client",
+
+    });
+    listItems.Add(new SelectListItem
+    {
+        Text = "Freelancer",
+        Value = "Freelancer"
+
+    });
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Freelance</title>
+    <link href="~/Content/bootstrap.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/avatar.css" rel="stylesheet" type="text/css" />
+    <script src="~/Scripts/modernizr-2.8.3.js"></script>
+    <script src="~/Scripts/JSFunctions.js"></script>
+
+</head>
+<body>
+
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark bg-dark">
+        <div class="container-fluid w-100">
+           @Html.ActionLink("Freelance", "CurrentUser", "User", new { area = "" }, new { @class = "navbar-brand" })
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarToggler" aria-expanded="false">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            @Html.Partial("_LoginPartial")
+
+
+        </div>
+    </nav>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - FreeLance</p>
+        </footer>
+    </div>
+
+
+
+    <!-- Login Modal -->
+    <div class="modal fade show" id="LoginModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Login</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body d-flex justify-content-center">
+                    @using (Html.BeginForm("Login", "User", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="mb-3">
+                            <label for="LoginEmail" class="form-label">Email address</label>
+                            @Html.EditorFor(u => u.userLogin.Email, new { htmlAttributes = new { @class = "form-control", @id = "LoginEmail", @type = "Email", @required = "" } })
+                            @Html.ValidationMessageFor(u => u.userLogin.Email, "", new { @class = "text-danger" })
+
+                        </div>
+                        <div class="mb-3">
+                            <label for="LoginPassword" class="form-label">Password</label>
+
+                            @Html.EditorFor(u => u.userLogin.Password, new { htmlAttributes = new { @class = "form-control", @id = "LoginPassword", @type = "Password", @required = "" } })
+                            @Html.ValidationMessageFor(u => u.userLogin.Password, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" onclick="ShowPassword()" class="form-check-input" id="ShowPasswordCheckBox">
+                            <label class="form-check-label" for="ShowPasswordCheckBox">Show Password</label>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" class="btn btn-primary">Login</button>
+                        </div>
+
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div class="modal fade" id="RegisterModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Register</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    @using (Html.BeginForm("Register", "User", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div>
+                            <div class="mb-3">
+                                <label style="cursor: pointer;" for="file-input">
+                                    <img title="Select Photo" class="avatar avatar-128 bg-light text-white p-2"
+                                         src="https://raw.githubusercontent.com/twbs/icons/main/icons/person-fill.svg" />
+                                </label>
+
+                                <input id="file-input" name="ImageFile" style="display: none;" onchange="previewImage()" type="file" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col mb-3">
+                                <label for="RegisterFirstName" class="form-label">First Name</label>
+                                @Html.EditorFor(u => u.user.FirstName, new { htmlAttributes = new { @class = "form-control", @id = "RegisterFirstName", @type = "text", @required = "" } })
+                                @Html.ValidationMessageFor(u => u.user.FirstName, "", new { @class = "text-danger" })
+
+                            </div>
+                            <div class="col mb-3">
+                                <label for="RegisterLastName" class="form-label">Last Name</label>
+                                @Html.EditorFor(u => u.user.LastName, new { htmlAttributes = new { @class = "form-control", @id = "RegisterLastName", @type = "text", @required = "" } })
+                                @Html.ValidationMessageFor(u => u.user.LastName, "", new { @class = "text-danger" })
+
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col mb-3">
+                                <label for="RegisterUserName" class="form-label">UserName</label>
+                                @Html.EditorFor(u => u.user.UserName, new { htmlAttributes = new { @class = "form-control", @id = "RegisterUserName", @type = "text", @required = "" } })
+                                @Html.ValidationMessageFor(u => u.user.UserName, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col mb-3">
+                                <label for="RegisterEmail" class="form-label">Email address</label>
+                                @Html.EditorFor(u => u.user.Email, new { htmlAttributes = new { @class = "form-control", @id = "RegisterEmail", @type = "email", @required = "" } })
+                                @Html.ValidationMessageFor(u => u.user.Email, "", new { @class = "text-danger" })
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <div class="col mb-3">
+                                    <label for="RegisterPassword" class="form-label">Password</label>
+                                    @Html.EditorFor(u => u.user.Password, new { htmlAttributes = new { @class = "form-control", @id = "RegisterPassword", @type = "password", @required = "" } })
+                                    @Html.ValidationMessageFor(u => u.user.Password, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="mb-3 form-check">
+                                    <input type="checkbox" onclick="ShowPassword()" class="form-check-input" id="ShowPasswordCheckBox">
+                                    <label class="form-check-label" for="ShowPasswordCheckBox">Show Password</label>
+                                </div>
+                            </div>
+                            <div class="col mb-3">
+                                <label for="RegisterPhoneNumber" class="form-label">Phone Number</label>
+                                @Html.EditorFor(u => u.user.PhoneNumber, new { htmlAttributes = new { @class = "form-control", @id = "RegisterPhoneNumber", @type = "text", @required = "" } })
+                                @Html.ValidationMessageFor(u => u.user.PhoneNumber, "", new { @class = "text-danger" })
+                            </div>
+
+
+                        </div>
+                        <div class="mb-3 form-floating row mx-1">
+
+                            @Html.DropDownListFor(u => u.user.UserType, listItems, new { @class = "form-select", @id = "RegisterType", @required = "" })
+                            <label for="RegisterType">Register As</label>
+                        </div>
+                        <div class="d-flex justify-content-center"><button type="submit" class="btn btn-primary">Register</button></div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <script src="~/Scripts/bootstrap.js"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

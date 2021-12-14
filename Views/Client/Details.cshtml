@@ -1,0 +1,98 @@
+﻿@model Freelance.Models.ViewModels.HomeViewModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>JobPost</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.post.ClientId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.post.ClientId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.post.JobType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.post.JobType)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.post.JobTitle)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.post.JobTitle)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.post.JobBudget)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.post.JobBudget)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.post.Date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.post.Date)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.post.JobDes)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.post.JobDes)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.post.PropNum)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.post.PropNum)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.post.Rate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.post.Rate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.post.Approved)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.post.Approved)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.post.Taken)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.post.Taken)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.post.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
